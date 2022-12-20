@@ -72,7 +72,7 @@ export default class BoardPresenter {
       document.removeEventListener('keydown', escKeyDownHandler);
     });
 
-
+    //Просто комментарий!!!
     render(pointComponent, this.#eventListComponent.element);
   }
 }
