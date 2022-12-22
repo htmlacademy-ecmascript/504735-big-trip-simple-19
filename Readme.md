@@ -1,7 +1,7 @@
-# Проект «Большое путешествие (простой)»
+# Проект «Большое путешествие»
 
 * Студент: [Андрей Ахраменко](https://up.htmlacademy.ru/ecmascript/19/user/504735).
-* Наставник: `Неизвестно`.
+* Наставник: [Владимир Якушкин](https://htmlacademy.ru/profile/id126208).
 
 ---
 
@@ -48,5 +48,5 @@ git clone SSH-адрес_вашего_форка
 
 Репозиторий создан для обучения на профессиональном курсе «[JavaScript. Архитектура клиентских приложений](https://htmlacademy.ru/intensive/ecmascript)» от [HTML Academy](https://htmlacademy.ru).
 
-[check-image]: https://github.com/htmlacademy-ecmascript/504735-big-trip-simple-19/workflows/Project%20check/badge.svg?branch=master
-[check-url]: https://github.com/htmlacademy-ecmascript/504735-big-trip-simple-19/actions
+[check-image]: https://github.com/htmlacademy-ecmascript/504735-big-trip-19/workflows/Project%20check/badge.svg?branch=master
+[check-url]: https://github.com/htmlacademy-ecmascript/504735-big-trip-19/actions
