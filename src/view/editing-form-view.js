@@ -1,4 +1,4 @@
-import { createElement } from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import { humanizeDate } from '../utils.js';
 import { TYPE_POINTS } from '../const.js';
 const BLANK_POINT = {
@@ -161,31 +161,36 @@ const createEditingFormTemplate = (point, destinations, offers) => {
   );
 };
 
-export default class EditingFormView {
-  #element = null;
+export default class EditingFormView extends AbstractView{
   #point = null;
   #destinations = null;
   #offers = null;
+  #handleFormSubmit = null;
+  #handleCloseEditClick = null;
 
-  constructor({point = BLANK_POINT, destinations, offers}) {
+  constructor({point = BLANK_POINT, destinations, offers, onFormSubmit, onCloseEditBtn}) {
+    super();
     this.#point = point;
     this.#destinations = destinations;
     this.#offers = offers;
+    this.#handleFormSubmit = onFormSubmit;
+    this.#handleCloseEditClick = onCloseEditBtn;
+
+    this.element.querySelector('form .event__save-btn').addEventListener('submit', this.#submitFormHandler);
+
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#closeEditBtnClickHandle);
   }
 
   get template() {
     return createEditingFormTemplate(this.#point, this.#destinations, this.#offers);
   }
 
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
+  #submitFormHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleFormSubmit();
+  };
 
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
-  }
+  #closeEditBtnClickHandle = () => {
+    this.#handleCloseEditClick();
+  };
 }
