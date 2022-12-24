@@ -3,7 +3,7 @@ import EventListView from '../view/event-list-view.js';
 import EditingFormView from '../view/editing-form-view.js';
 import NoPointsView from '../view/no-points-view.js';
 import RoutPointView from '../view/route-point-view.js';
-import {render} from '../render.js';
+import {render} from '../framework/render.js';
 
 export default class BoardPresenter {
   #boardContainer = null;
@@ -37,42 +37,47 @@ export default class BoardPresenter {
   }
 
   #renderPoint({point, destinations, offers}) {
-    const pointComponent = new RoutPointView({point, destinations, offers });
-    const pointEditComponent = new EditingFormView({point, destinations, offers});
-
-    const replacePointToForm = () => {
-      this.#eventListComponent.element.replaceChild(pointEditComponent.element, pointComponent.element);
-    };
-
-    const replaceFormToPoint = () => {
-      this.#eventListComponent.element.replaceChild(pointComponent.element, pointEditComponent.element);
-    };
-
     const escKeyDownHandler = (evt) => {
       if (evt.key === 'Escape' || evt.key === 'Esc') {
         evt.preventDefault();
-        replaceFormToPoint();
+        replaceFormToPoint.call(this);
         document.removeEventListener('keydown', escKeyDownHandler);
       }
     };
 
-    pointComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
-      replacePointToForm();
-      document.addEventListener('keydown', escKeyDownHandler);
+    const pointComponent = new RoutPointView({
+      point,
+      destinations,
+      offers,
+      onEditBtnClick: () => {
+        replacePointToForm.call(this);
+        document.addEventListener('keydown', escKeyDownHandler);
+      }
     });
 
-    pointEditComponent.element.querySelector('form .event__save-btn').addEventListener('submit', (evt) => {
-      evt.preventDefault();
-      replaceFormToPoint();
-      document.removeEventListener('keydown', escKeyDownHandler);
+    const pointEditComponent = new EditingFormView({
+      point,
+      destinations,
+      offers,
+      onFormSubmit: (evt) => {
+        evt.preventDefault();
+        replaceFormToPoint.call(this);
+        document.removeEventListener('keydown', escKeyDownHandler);
+      },
+      onCloseEditBtn: () => {
+        replaceFormToPoint.call(this);
+        document.removeEventListener('keydown', escKeyDownHandler);
+      }
     });
 
-    pointEditComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
-      replaceFormToPoint();
-      document.removeEventListener('keydown', escKeyDownHandler);
-    });
+    function replacePointToForm() {
+      this.#eventListComponent.element.replaceChild(pointEditComponent.element, pointComponent.element);
+    }
 
-    //Просто комментарий!!!
+    function replaceFormToPoint() {
+      this.#eventListComponent.element.replaceChild(pointComponent.element, pointEditComponent.element);
+    }
+
     render(pointComponent, this.#eventListComponent.element);
   }
 }
