@@ -1,5 +1,6 @@
-import { getRandomArrayElement, getRandomNumber, getRandomDate, isLongerDate } from '../utils';
+import { getRandomDate, isLongerDate } from '../utils/points.js';
 import { TYPE_POINTS, DESTINATIONS, DESCRIPTIONS} from '../const.js';
+import {getRandomArrayElement, getRandomNumber} from '../utils/common.js';
 
 const date = getRandomDate();
 

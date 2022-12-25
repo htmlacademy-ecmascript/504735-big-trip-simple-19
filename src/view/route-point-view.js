@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { humanizePointDate, humanizePointTime, calculateDurationInPoint } from '../utils.js';
+import { humanizePointDate, humanizePointTime, calculateDurationInPoint } from '../utils/points.js';
 
 const createOfferElement = (offers) => {
   if (offers.length === 0) {

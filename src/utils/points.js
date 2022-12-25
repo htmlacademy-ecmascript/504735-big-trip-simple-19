@@ -1,14 +1,8 @@
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
+import { getRandomNumber } from './common';
 
 dayjs.extend(duration);
-
-function getRandomArrayElement(items) {
-  return items[Math.floor(Math.random() * items.length)];
-}
-
-//Генератор числа в диапазоне.
-const getRandomNumber = (from, to) => Math.floor(Math.random() * (to - from + 1)) + from;
 
 const getRandomDate = () => new Date();
 
@@ -40,5 +34,14 @@ const calculateDurationInPoint = (startDate, endDate) => {
   }
 };
 
+const isStartDateExpired = (dateFrom) => dayjs(dateFrom).isAfter(dayjs());
 
-export {getRandomArrayElement, getRandomNumber, isLongerDate, getRandomDate, humanizePointDate, humanizeDate, humanizePointTime, calculateDurationInPoint};
+const isEndDateExpired = (dateTo) => dayjs(dateTo).isAfter(dayjs());
+
+const isFutureEvent = (dateFrom, dateTo) => isStartDateExpired(dateFrom) && isEndDateExpired(dateTo);
+
+const isPresentEvent = (dateFrom, dateTo) => !isStartDateExpired(dateFrom) && isEndDateExpired(dateTo);
+
+const isPastEvent = (dateFrom, dateTo) => !isStartDateExpired(dateFrom) && !isEndDateExpired(dateTo);
+
+export {isLongerDate, getRandomDate, humanizePointDate, humanizeDate, humanizePointTime, calculateDurationInPoint, isFutureEvent, isPresentEvent, isPastEvent};

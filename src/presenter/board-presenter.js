@@ -3,7 +3,7 @@ import EventListView from '../view/event-list-view.js';
 import EditingFormView from '../view/editing-form-view.js';
 import NoPointsView from '../view/no-points-view.js';
 import RoutPointView from '../view/route-point-view.js';
-import {render} from '../framework/render.js';
+import {render, replace} from '../framework/render.js';
 
 export default class BoardPresenter {
   #boardContainer = null;
@@ -71,13 +71,13 @@ export default class BoardPresenter {
     });
 
     function replacePointToForm() {
-      this.#eventListComponent.element.replaceChild(pointEditComponent.element, pointComponent.element);
+      replace(pointEditComponent, pointComponent);
     }
 
     function replaceFormToPoint() {
-      this.#eventListComponent.element.replaceChild(pointComponent.element, pointEditComponent.element);
+      replace(pointComponent, pointEditComponent);
     }
-
+    // console.log(generateFilter(this.#boardPoints));
     render(pointComponent, this.#eventListComponent.element);
   }
 }
