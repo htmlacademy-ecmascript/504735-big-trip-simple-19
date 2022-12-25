@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { humanizeDate } from '../utils.js';
+import { humanizeDate } from '../utils/points.js';
 import { TYPE_POINTS } from '../const.js';
 const BLANK_POINT = {
   id: 1,
