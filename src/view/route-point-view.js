@@ -24,7 +24,7 @@ function createRoutPointTemplate(point, destinations, offers) {
   const duration = calculateDurationInPoint(dateFrom, dateTo);
 
   const favoriteClass = isFavorite ? 'event__favorite-btn--active' : '';
-  const destinationMarkup = destinations.find((el) => el.id === point.id).name;
+  const destinationMarkup = destinations.find((el) => el.id === point.destination).name;
   const offersByType = (offers.find((offer) => offer.type === point.type)).offers;
   const offersForRender = offersByType.filter(({id}) => pointOffers.includes(id));
   const offersTemplate = createOfferElement(offersForRender);
@@ -71,15 +71,18 @@ export default class RoutPointView extends AbstractView {
   #destinations = null;
   #offers = null;
   #handleEditBtnClick = null;
+  #handleFavoriteClick = null;
 
-  constructor({point, destinations, offers, onEditBtnClick}) {
+  constructor({point, destinations, offers, onEditBtnClick, onFavoriteClick}) {
     super();
     this.#point = point;
     this.#destinations = destinations;
     this.#offers = offers;
     this.#handleEditBtnClick = onEditBtnClick;
+    this.#handleFavoriteClick = onFavoriteClick;
 
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#editClickHandler);
+    this.element.querySelector('.event__favorite-btn').addEventListener('click', this.#favoriteClickHandler);//////////////////////
   }
 
   get template() {
@@ -89,5 +92,10 @@ export default class RoutPointView extends AbstractView {
   #editClickHandler = (evt) => {
     evt.preventDefault();
     this.#handleEditBtnClick();
+  };
+
+  #favoriteClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleFavoriteClick();
   };
 }
