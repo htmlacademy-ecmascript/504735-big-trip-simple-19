@@ -48,7 +48,7 @@ const createDescriptionTemplate = (destinations, point) => {
   }
 
   return (
-    destinations.find((el) => el.id === point.id)
+    destinations.find((el) => el.id === point.destination)
   );
 };
 
@@ -80,7 +80,7 @@ const createEditingFormTemplate = (point, destinations, offers) => {
   const offersByType = getOffersByType(offers, point).offers;
   const offersTemplate = createOffersTemplate(offersByType, pointOffers);
   const destinationMarkup = createDescriptionTemplate(destinations, point).name;
-  const descriptionMarkup = (destinations.find((el) => el.id === point.id)).description;
+  const descriptionMarkup = (destinations.find((el) => el.id === point.destination)).description;
   const picturesMarkup = createPicturesTemplate(destinations, description, point);
 
 
@@ -187,7 +187,7 @@ export default class EditingFormView extends AbstractView{
 
   #submitFormHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit();
+    this.#handleFormSubmit(this.#point, this.#destinations, this.#offers);
   };
 
   #closeEditBtnClickHandle = () => {

@@ -5,4 +5,8 @@ function getRandomArrayElement(items) {
 //Генератор числа в диапазоне.
 const getRandomNumber = (from, to) => Math.floor(Math.random() * (to - from + 1)) + from;
 
-export {getRandomArrayElement, getRandomNumber};
+function updateItem(items, update) {
+  return items.map((item) => item.id === update.id ? update : item);
+}
+
+export {getRandomArrayElement, getRandomNumber, updateItem};

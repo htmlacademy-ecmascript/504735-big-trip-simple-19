@@ -1,6 +1,8 @@
 import { getRandomDate, isLongerDate } from '../utils/points.js';
 import { TYPE_POINTS, DESTINATIONS, DESCRIPTIONS} from '../const.js';
 import {getRandomArrayElement, getRandomNumber} from '../utils/common.js';
+import {nanoid} from 'nanoid';
+
 
 const date = getRandomDate();
 
@@ -295,9 +297,9 @@ const destinations = [
 
 const routePoints = [
   {
-    id: 1,
+    // id: 1,
     type: getRandomArrayElement(TYPE_POINTS),
-    destination: getRandomNumber(1, 10),
+    destination: getRandomNumber(1, 7),
     isFavorite: Math.random() < 0.5,
     offers: [1, 2, 3],
     dateFrom: date,
@@ -305,9 +307,9 @@ const routePoints = [
     price: getRandomNumber(10, 3000)
   },
   {
-    id: 2,
+    // id: 2,
     type: getRandomArrayElement(TYPE_POINTS),
-    destination: getRandomNumber(1, 10),
+    destination: getRandomNumber(1, 7),
     isFavorite: Math.random() < 0.5,
     offers: [ 1, 2, 4, 5],
     dateFrom: date,
@@ -315,9 +317,9 @@ const routePoints = [
     price: getRandomNumber(1000, 3000)
   },
   {
-    id: 3,
+    // id: 3,
     type: getRandomArrayElement(TYPE_POINTS),
-    destination: getRandomNumber(1, 10),
+    destination: getRandomNumber(1, 7),
     isFavorite: Math.random() < 0.5,
     offers: [1],
     dateFrom: date,
@@ -325,9 +327,9 @@ const routePoints = [
     price: getRandomNumber(500, 900)
   },
   {
-    id: 4,
+    // id: 4,
     type: getRandomArrayElement(TYPE_POINTS),
-    destination: getRandomNumber(1, 10),
+    destination: getRandomNumber(1, 7),
     isFavorite: Math.random() < 0.5,
     offers: [1, 2, 3, 4, 5, 6],
     dateFrom: date,
@@ -335,9 +337,9 @@ const routePoints = [
     price: getRandomNumber(100, 3000)
   },
   {
-    id: 5,
+    // id: 5,
     type: getRandomArrayElement(TYPE_POINTS),
-    destination: getRandomNumber(1, 10),
+    destination: getRandomNumber(1, 7),
     isFavorite: Math.random() < 0.5,
     offers: [1, 4, 5, 6],
     dateFrom: date,
@@ -346,6 +348,11 @@ const routePoints = [
   },
 ];
 
-const getRandomRoutePoint = () => getRandomArrayElement(routePoints);
+function getRandomRoutePoint() {
+  return {
+    id: nanoid(),
+    ...getRandomArrayElement(routePoints)
+  };
+}
 
 export {getRandomRoutePoint, availableOffers, destinations};
