@@ -5,7 +5,7 @@ function createFilterItemTemplate(filter, isChecked) {
   return (
     `<div class="trip-filters__filter">
       <input 
-      id="filter-everything" 
+      id="filter-${name}" 
       class="trip-filters__filter-input  
       visually-hidden" type="radio" 
       name="trip-filter" 
@@ -13,7 +13,7 @@ function createFilterItemTemplate(filter, isChecked) {
       ${isChecked ? 'checked' : ''}
       ${count === 0 ? 'disabled' : ''}
       >
-      <label class="trip-filters__filter-label" for="filter-${name}">${name}</label>
+      <label class="trip-filters__filter-label" for="filter-${name}">${name} </label>
     </div>`
   );
 }
@@ -35,7 +35,7 @@ function createListFilterTemplate(filterItems) {
 export default class ListFilterView extends AbstractView {
   #filters = null;
 
-  constructor({ filters }) {
+  constructor({filters}) {
     super();
     this.#filters = filters;
   }

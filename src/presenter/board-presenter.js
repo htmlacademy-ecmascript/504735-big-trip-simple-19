@@ -1,7 +1,7 @@
 import SortView from './../view/list-sort-view.js';
 import EventListView from '../view/event-list-view.js';
 import NoPointsView from '../view/no-points-view.js';
-import {render} from '../framework/render.js';
+import {render, RenderPosition} from '../framework/render.js';
 import PointPresenter from './point-presenter.js';
 import {updateItem} from '../utils/common.js';
 import {SortType} from '../const.js';
@@ -33,13 +33,14 @@ export default class BoardPresenter {
     this.#offers = this.#pointsModel.allOffersByType;
 
     this.#sourcedBoardPoints = [...this.#pointsModel.points];
+
+    render(this.#eventListComponent, this.#boardContainer);
     this.#renderContent();
   }
 
-  #renderPointList = () => {
-    render(this.#eventListComponent, this.#boardContainer);
-    this.#boardPoints.forEach((el) => {
-      this.#renderPoint({ point: el, destinations: this.#destinations, offers: this.#offers });
+  #renderPointList = (point) => {
+    point.forEach((el) => {
+      this.#renderPoint(el, this.#destinations, this.#offers);
     });
   };
 
@@ -52,22 +53,22 @@ export default class BoardPresenter {
     this.#pointPresenter.forEach((presenter) => presenter.resetView());
   };
 
-  #renderPoint = ({point, destinations, offers}) => {
+  #renderPoint = (point, destinations, offers) => {
     const pointPresenter = new PointPresenter({
       pointListContainer: this.#eventListComponent.element,
       onDataChange: this.#handlePointChange,
       onModeChange: this.#handleModeChange,
     });
 
-    pointPresenter.init({point, destinations, offers});
+    pointPresenter.init(point, destinations, offers);
     this.#pointPresenter.set(point.id, pointPresenter);
   };
 
   #handlePointChange = (updatedPoint) => {
     this.#boardPoints = updateItem(this.#boardPoints, updatedPoint);
     this.#sourcedBoardPoints = updateItem(this.#sourcedBoardPoints, updatedPoint);
-    /////////////////////////////
-    this.#pointPresenter.get(updatedPoint.id).init(updatedPoint);//////////////////////////
+
+    this.#pointPresenter.get(updatedPoint.id).init(updatedPoint, this.#destinations, this.#offers);
   };
 
   #sortPoints(sortType) {
@@ -95,7 +96,7 @@ export default class BoardPresenter {
 
     this.#sortPoints(sortType);
     this.#clearPointList();
-    this.#renderPointList();
+    this.#renderPointList(this.#boardPoints);
   };
 
   #renderSort = () => {
@@ -103,7 +104,7 @@ export default class BoardPresenter {
       onSortTypeChange: this.#handleSortTypeChange
     });
 
-    render(this.#sortComponent, this.#boardContainer);
+    render(this.#sortComponent, this.#boardContainer, RenderPosition.AFTERBEGIN);
   };
 
   #renderNoPoints = () => {
@@ -118,6 +119,6 @@ export default class BoardPresenter {
     }
 
     this.#renderSort();
-    this.#renderPointList();
+    this.#renderPointList(this.#boardPoints);
   };
 }
