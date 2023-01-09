@@ -95,7 +95,8 @@ const createEditingFormTemplate = (point, destinations, offers) => {
 
 
   return (
-    `<form class="event event--edit" action="#" method="get">
+    `<li class="trip-events__item">
+    <form class="event event--edit" action="#" method="get">
     <header class="event__header">
       <div class="event__type-wrapper">
         <label class="event__type  event__type-btn" for="event-type-toggle-1">
@@ -157,7 +158,8 @@ const createEditingFormTemplate = (point, destinations, offers) => {
         
       </section>
     </section>
-  </form>`
+  </form>
+  </li>`
   );
 };
 
@@ -176,7 +178,7 @@ export default class EditingFormView extends AbstractView{
     this.#handleFormSubmit = onFormSubmit;
     this.#handleCloseEditClick = onCloseEditBtn;
 
-    this.element.querySelector('form .event__save-btn').addEventListener('submit', this.#submitFormHandler);
+    this.element.querySelector('form.event--edit').addEventListener('submit', this.#submitFormHandler);
 
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#closeEditBtnClickHandle);
   }
@@ -187,7 +189,7 @@ export default class EditingFormView extends AbstractView{
 
   #submitFormHandler = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit(this.#point, this.#destinations, this.#offers);
+    this.#handleFormSubmit(this.#point);
   };
 
   #closeEditBtnClickHandle = () => {
