@@ -211,7 +211,7 @@ export default class EditingFormView extends AbstractStatefulView{
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#closeEditBtnClickHandle);
 
     this.element.querySelector('.event__type-group').addEventListener('change', this.#pointTypeChangeHandler);
-    // this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
+
     this.element.querySelector('.event__available-offers')?.addEventListener('change', this.#offerChangeHandler);
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#descriptionInputHandler);
     this.#setDatepickerDateFrom();
