@@ -77,12 +77,14 @@ export default class PointPresenter {
   #escKeyDownHandler = (evt) => {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
+      this.#pointEditComponent.reset(this.#point, this.#destinations, this.#offers);
       this.#replaceFormToPoint();
     }
   };
 
   resetView() {
     if (this.#mode !== Mode.DEFAULT) {
+      this.#pointEditComponent.reset(this.#point, this.#destinations, this.#offers);
       this.#replaceFormToPoint();
     }
   }
@@ -101,6 +103,7 @@ export default class PointPresenter {
   }
 
   #handleCloseEditBtn = () => {
+    this.#pointEditComponent.reset(this.#point, this.#destinations, this.#offers);
     this.#replaceFormToPoint();
   };
 

@@ -1,4 +1,4 @@
-import SortView from './../view/list-sort-view.js';
+import ListSortView from './../view/list-sort-view.js';
 import EventListView from '../view/event-list-view.js';
 import NoPointsView from '../view/no-points-view.js';
 import {render, RenderPosition} from '../framework/render.js';
@@ -18,7 +18,7 @@ export default class BoardPresenter {
   #destinations = null;
   #offers = null;
   #pointPresenter = new Map();
-  #currentSortType = SortType.DEFAULT;
+  #currentSortType = SortType.DAY;
   #sourcedBoardPoints = [];
 
   constructor({boardContainer, pointsModel}) {
@@ -34,15 +34,21 @@ export default class BoardPresenter {
 
     this.#sourcedBoardPoints = [...this.#pointsModel.points];
 
+    if (!this.#boardPoints.length) {
+      this.#renderNoPoints();
+      return;
+    }
+
     render(this.#eventListComponent, this.#boardContainer);
-    this.#renderContent();
+    this.#renderSort();
+    this.#renderPointList(sortByDate(this.#boardPoints));
   }
 
-  #renderPointList = (point) => {
-    point.forEach((el) => {
+  #renderPointList(points) {
+    return points.forEach((el) => {
       this.#renderPoint(el, this.#destinations, this.#offers);
     });
-  };
+  }
 
   #clearPointList() {
     this.#pointPresenter.forEach((presenter) => presenter.destroy());
@@ -73,17 +79,17 @@ export default class BoardPresenter {
 
   #sortPoints(sortType) {
     switch (sortType) {
-      case SortType.DEFAULT:
-        this.#boardPoints.sort(sortByDate);
-        break;
+      // case SortType.DAY:
+      //   sortByDate(this.#boardPoints);
+      //   break;
       case SortType.PRICE:
-        this.#boardPoints.sort(sortByPrice);
+        sortByPrice(this.#boardPoints);
         break;
       case SortType.DURATION:
-        this.#boardPoints.sort(sortByDuration);
+        sortByDuration(this.#boardPoints);
         break;
       default:
-        this.#boardPoints = [...this.#boardPoints];
+        this.#boardPoints = [...this.#sourcedBoardPoints];
     }
 
     this.#currentSortType = sortType;
@@ -99,26 +105,16 @@ export default class BoardPresenter {
     this.#renderPointList(this.#boardPoints);
   };
 
-  #renderSort = () => {
-    this.#sortComponent = new SortView({
+  #renderSort() {
+    this.#sortComponent = new ListSortView({
       onSortTypeChange: this.#handleSortTypeChange
     });
 
     render(this.#sortComponent, this.#boardContainer, RenderPosition.AFTERBEGIN);
-  };
+  }
 
   #renderNoPoints = () => {
     render(this.#noPointsComponent, this.#boardContainer);
   };
 
-  #renderContent = () => {
-
-    if (!this.#boardPoints.length) {
-      this.#renderNoPoints();
-      return;
-    }
-
-    this.#renderSort();
-    this.#renderPointList(this.#boardPoints);
-  };
 }
