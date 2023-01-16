@@ -11,7 +11,7 @@ function createListSortTemplate() {
           type="radio" 
           name="trip-sort" 
           value="sort-day" 
-          data-sort-type="${SortType.DEFAULT}"
+          data-sort-type="${SortType.DAY}"
           >
         <label class="trip-sort__btn" for="sort-day">Day</label>
         </div>
@@ -63,7 +63,7 @@ export default class ListSortView extends AbstractView {
     super();
     this.#handleSortTypeChange = onSortTypeChange;
 
-    this.element.addEventListener('click', this.#sortTypeChangeHandler);
+    this.element.addEventListener('change', this.#sortTypeChangeHandler);
   }
 
   get template() {
@@ -71,7 +71,7 @@ export default class ListSortView extends AbstractView {
   }
 
   #sortTypeChangeHandler = (evt) => {
-    if (!evt.target.closest('input')) {
+    if (!evt.target.hasAttribute('data-sort-type')) {
       return;
     }
 

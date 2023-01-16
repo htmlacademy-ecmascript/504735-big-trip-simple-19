@@ -1,6 +1,6 @@
 import {getRandomRoutePoint, availableOffers, destinations} from './../mock/points.js';
 
-const POINTS_COUNT = 7;
+const POINTS_COUNT = 5;
 
 export default class PointsModel {
   #points = Array.from({length: POINTS_COUNT}, getRandomRoutePoint);

@@ -34,6 +34,10 @@ const calculateDurationInPoint = (startDate, endDate) => {
   }
 };
 
+
+// Функция сопоставления выбранного пункта назначения
+const getCheckedDestination = (point, destinations) => destinations.find((destination) => point.destination === destination.id);
+
 const isStartDateExpired = (dateFrom) => dayjs(dateFrom).isAfter(dayjs());
 
 const isEndDateExpired = (dateTo) => dayjs(dateTo).isAfter(dayjs());
@@ -44,4 +48,4 @@ const isPresentEvent = (dateFrom, dateTo) => !isStartDateExpired(dateFrom) && is
 
 const isPastEvent = (dateFrom, dateTo) => !isStartDateExpired(dateFrom) && !isEndDateExpired(dateTo);
 
-export {isLongerDate, getRandomDate, humanizePointDate, humanizeDate, humanizePointTime, calculateDurationInPoint, isFutureEvent, isPresentEvent, isPastEvent};
+export {isLongerDate, getRandomDate, humanizePointDate, humanizeDate, humanizePointTime, calculateDurationInPoint, isFutureEvent, isPresentEvent, isPastEvent, getCheckedDestination};
