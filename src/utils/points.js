@@ -48,4 +48,6 @@ const isPresentEvent = (dateFrom, dateTo) => !isStartDateExpired(dateFrom) && is
 
 const isPastEvent = (dateFrom, dateTo) => !isStartDateExpired(dateFrom) && !isEndDateExpired(dateTo);
 
-export {isLongerDate, getRandomDate, humanizePointDate, humanizeDate, humanizePointTime, calculateDurationInPoint, isFutureEvent, isPresentEvent, isPastEvent, getCheckedDestination};
+const isDatesEqual = (dateA, dateB) => (dateA === null && dateB === null) || dayjs(dateA).isSame(dateB, 'D');
+
+export {isLongerDate, getRandomDate, humanizePointDate, humanizeDate, humanizePointTime, calculateDurationInPoint, isFutureEvent, isPresentEvent, isPastEvent, getCheckedDestination, isDatesEqual};

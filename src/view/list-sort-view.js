@@ -1,7 +1,7 @@
 import AbstractView from '../framework/view/abstract-view.js';
 import {SortType} from '../const.js';
 
-function createListSortTemplate() {
+function createListSortTemplate(currentSortType) {
   return (
     `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
         <div class="trip-sort__item  trip-sort__item--day">
@@ -10,7 +10,8 @@ function createListSortTemplate() {
           visually-hidden" 
           type="radio" 
           name="trip-sort" 
-          value="sort-day" 
+          value="sort-day"
+          ${currentSortType === SortType.DAY ? 'checked' : ''} 
           data-sort-type="${SortType.DAY}"
           >
         <label class="trip-sort__btn" for="sort-day">Day</label>
@@ -27,7 +28,8 @@ function createListSortTemplate() {
           visually-hidden" 
           type="radio" 
           name="trip-sort"      
-          value="sort-time" 
+          value="sort-time"
+          ${currentSortType === SortType.DURATION ? 'checked' : ''} 
           data-sort-type="${SortType.DURATION}"
           >
         <label class="trip-sort__btn" for="sort-time">Time</label>
@@ -40,6 +42,7 @@ function createListSortTemplate() {
           type="radio" 
           name="trip-sort" 
           value="sort-price"
+          ${currentSortType === SortType.PRICE ? 'checked' : ''}
           data-sort-type="${SortType.PRICE}"
           >
         <label class="trip-sort__btn" for="sort-price">Price</label>
@@ -58,16 +61,18 @@ function createListSortTemplate() {
 
 export default class ListSortView extends AbstractView {
   #handleSortTypeChange = null;
+  #currentSortType = null;
 
-  constructor({onSortTypeChange}) {
+  constructor({currentSortType, onSortTypeChange}) {
     super();
+    this.#currentSortType = currentSortType;
     this.#handleSortTypeChange = onSortTypeChange;
 
     this.element.addEventListener('change', this.#sortTypeChangeHandler);
   }
 
   get template() {
-    return createListSortTemplate();
+    return createListSortTemplate(this.#currentSortType);
   }
 
   #sortTypeChangeHandler = (evt) => {
