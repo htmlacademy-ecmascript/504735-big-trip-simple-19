@@ -36,7 +36,7 @@ const calculateDurationInPoint = (startDate, endDate) => {
 
 
 // Функция сопоставления выбранного пункта назначения
-const getCheckedDestination = (point, destinations) => destinations.find((destination) => point.destination === destination.id);
+const getCheckedDestination = (point, destinations) => destinations?.find((destination) => point.destination === destination.id);
 
 const isStartDateExpired = (dateFrom) => dayjs(dateFrom).isAfter(dayjs());
 

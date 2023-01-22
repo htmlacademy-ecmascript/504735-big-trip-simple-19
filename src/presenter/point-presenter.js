@@ -21,11 +21,13 @@ export default class PointPresenter {
   #destinations = null;
   #offers = null;
   #mode = Mode.DEFAULT;
+  #isPointEdit = null;
 
-  constructor({pointListContainer, onDataChange, onModeChange}) {
+  constructor({pointListContainer, onDataChange, onModeChange, isPointEdit = true}) {
     this.#pointListContainer = pointListContainer;
     this.#handleDataChange = onDataChange;
     this.#handleModeChange = onModeChange;
+    this.#isPointEdit = isPointEdit;
   }
 
   init(point, destinations, offers) {
@@ -50,7 +52,8 @@ export default class PointPresenter {
       offers: this.#offers,
       onFormSubmit: this.#handleFormSubmit,
       onCloseEditBtn: this.#handleCloseEditBtn,
-      onDeleteClick: this.#handleDeleteClick
+      onDeleteClick: this.#handleDeleteClick,
+      isPointEdit: this.#isPointEdit,
     });
 
     if(prevPointComponent === null || prevPointEditComponent === null) {
@@ -111,7 +114,6 @@ export default class PointPresenter {
   };
 
   #handleFavoriteClick = () => {
-    // this.#handleDataChange({...this.#point, isFavorite: !this.#point.isFavorite});
     this.#handleDataChange(
       UserAction.UPDATE_POINT,
       UpdateType.MINOR,
@@ -120,7 +122,6 @@ export default class PointPresenter {
   };
 
   #handleFormSubmit = (point) => {
-    // this.#handleDataChange(point);
     const isMinorUpdate = !isDatesEqual(this.#point.dateFrom, point.dateFrom);
     const updateType = isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH;
     this.#handleDataChange(
