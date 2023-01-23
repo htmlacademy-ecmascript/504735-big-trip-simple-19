@@ -1,6 +1,8 @@
 import RoutPointView from '../view/route-point-view.js';
 import EditingFormView from '../view/editing-form-view.js';
 import {render, replace, remove} from '../framework/render.js';
+import {UserAction, UpdateType} from '../const.js';
+import {isDatesEqual} from '../utils/points.js';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -19,11 +21,13 @@ export default class PointPresenter {
   #destinations = null;
   #offers = null;
   #mode = Mode.DEFAULT;
+  #isPointEdit = null;
 
-  constructor({pointListContainer, onDataChange, onModeChange}) {
+  constructor({pointListContainer, onDataChange, onModeChange, isPointEdit = true}) {
     this.#pointListContainer = pointListContainer;
     this.#handleDataChange = onDataChange;
     this.#handleModeChange = onModeChange;
+    this.#isPointEdit = isPointEdit;
   }
 
   init(point, destinations, offers) {
@@ -47,7 +51,9 @@ export default class PointPresenter {
       destinations: this.#destinations,
       offers: this.#offers,
       onFormSubmit: this.#handleFormSubmit,
-      onCloseEditBtn: this.#handleCloseEditBtn
+      onCloseEditBtn: this.#handleCloseEditBtn,
+      onDeleteClick: this.#handleDeleteClick,
+      isPointEdit: this.#isPointEdit,
     });
 
     if(prevPointComponent === null || prevPointEditComponent === null) {
@@ -108,12 +114,30 @@ export default class PointPresenter {
   };
 
   #handleFavoriteClick = () => {
-    this.#handleDataChange({...this.#point, isFavorite: !this.#point.isFavorite});
+    this.#handleDataChange(
+      UserAction.UPDATE_POINT,
+      UpdateType.MINOR,
+      {...this.#point, isFavorite: !this.#point.isFavorite},
+    );
   };
 
   #handleFormSubmit = (point) => {
-    this.#handleDataChange(point);
+    const isMinorUpdate = !isDatesEqual(this.#point.dateFrom, point.dateFrom);
+    const updateType = isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH;
+    this.#handleDataChange(
+      UserAction.UPDATE_POINT,
+      updateType,
+      point
+    );
     this.#replaceFormToPoint();
+  };
+
+  #handleDeleteClick = (point) => {
+    this.#handleDataChange(
+      UserAction.DELETE_POINT,
+      UpdateType.MINOR,
+      point,
+    );
   };
 
   #handleEditBtn = () => {

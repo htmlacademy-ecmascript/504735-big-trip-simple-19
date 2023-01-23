@@ -24,7 +24,7 @@ function createRoutPointTemplate(point, destinations, offers) {
   const duration = calculateDurationInPoint(dateFrom, dateTo);
 
   const favoriteClass = isFavorite ? 'event__favorite-btn--active' : '';
-  const destinationMarkup = destinations.find((el) => el.id === point.destination).name;
+  const destinationMarkup = destinations.find((el) => el.id === point.destination)?.name;
   const offersByType = (offers.find((offer) => offer.type === point.type)).offers;
   const offersForRender = offersByType.filter(({id}) => pointOffers.includes(id));
   const offersTemplate = createOfferElement(offersForRender);
@@ -82,7 +82,7 @@ export default class RoutPointView extends AbstractView {
     this.#handleFavoriteClick = onFavoriteClick;
 
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#editClickHandler);
-    this.element.querySelector('.event__favorite-btn').addEventListener('click', this.#favoriteClickHandler);//////////////////////
+    this.element.querySelector('.event__favorite-btn').addEventListener('click', this.#favoriteClickHandler);
   }
 
   get template() {
