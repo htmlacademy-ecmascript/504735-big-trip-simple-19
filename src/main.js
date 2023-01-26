@@ -6,10 +6,19 @@ import MainInfoView from './view/main-info-view.js';
 import FilterModel from './model/filter-model.js';
 import FilterPresenter from './presenter/filter-presenter.js';
 import NewPointButtonView from './view/new-point-button-view';
+import PointsApiService from './point-api-service.js';
+
+
+const AUTHORIZATION = 'Basic hS2sfS44wcl1sa2j';
+const END_POINT = 'https://19.ecmascript.pages.academy/big-trip';
+
 
 const tripMainContainer = document.querySelector('.trip-main');
 const mainContainerElement = document.querySelector('.trip-events');
-const pointsModel = new PointsModel();
+// const pointsModel = new PointsModel();
+const pointsModel = new PointsModel({
+  pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION)
+});
 const filterModel = new FilterModel();
 const boardPresenter = new BoardPresenter({
   boardContainer: mainContainerElement,
@@ -41,7 +50,9 @@ const filterPresenter = new FilterPresenter({
   pointsModel
 });
 
-render(newPointButtonComponent, tripMainContainer, RenderPosition.BEFOREEND);
-
 filterPresenter.init();
 boardPresenter.init();
+pointsModel.init()
+  .finally(() => {
+    render(newPointButtonComponent, tripMainContainer);
+  });
