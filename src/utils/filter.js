@@ -8,5 +8,4 @@ const filter = {
   [FilterType.FUTURE]: (points) => points.filter((point) => isFutureEvent(point.dateFrom, point.dateTo)),
 };
 
-
 export {filter};

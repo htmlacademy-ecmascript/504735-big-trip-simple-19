@@ -38,6 +38,7 @@ export default class PointPresenter {
     const prevPointComponent = this.#pointComponent;
     const prevPointEditComponent = this.#pointEditComponent;
 
+
     this.#pointComponent = new RoutPointView({
       point: this.#point,
       destinations: this.#destinations,
@@ -56,19 +57,19 @@ export default class PointPresenter {
       isPointEdit: this.#isPointEdit,
     });
 
+
     if(prevPointComponent === null || prevPointEditComponent === null) {
       render(this.#pointComponent, this.#pointListContainer);
       return;
     }
 
-    // Проверка на наличие в DOM необходима,
-    // чтобы не пытаться заменить то, что не было отрисовано
     if (this.#mode === Mode.DEFAULT) {
       replace(this.#pointComponent, prevPointComponent);
     }
 
     if (this.#mode === Mode.EDITING) {
-      replace(this.#pointEditComponent, prevPointEditComponent);
+      replace(this.#pointComponent, prevPointEditComponent);
+      this.#mode = Mode.DEFAULT;
     }
 
     remove(prevPointComponent);
@@ -95,10 +96,45 @@ export default class PointPresenter {
     }
   }
 
+  setSaving() {
+    if (this.#mode === Mode.EDITING) {
+      this.#pointEditComponent.updateElement({
+        isDisabled: true,
+        isSaving: true,
+      });
+    }
+  }
+
+  setDeleting() {
+    if (this.#mode === Mode.EDITING) {
+      this.#pointEditComponent.updateElement({
+        isDisabled: true,
+        isDeleting: true,
+      });
+    }
+  }
+
+  setAborting() {
+    if (this.#mode === Mode.DEFAULT) {
+      this.#pointComponent.shake();
+      return;
+    }
+
+    const resetFormState = () => {
+      this.#pointEditComponent.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+
+    this.#pointEditComponent.shake(resetFormState);
+  }
+
   #replacePointToForm() {
     replace(this.#pointEditComponent, this.#pointComponent);
     document.addEventListener('keydown', this.#escKeyDownHandler);
-    this.#handleModeChange();
+    this.#handleModeChange?.();
     this.#mode = Mode.EDITING;
   }
 
@@ -129,7 +165,6 @@ export default class PointPresenter {
       updateType,
       point
     );
-    this.#replaceFormToPoint();
   };
 
   #handleDeleteClick = (point) => {

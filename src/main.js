@@ -15,7 +15,6 @@ const END_POINT = 'https://19.ecmascript.pages.academy/big-trip';
 
 const tripMainContainer = document.querySelector('.trip-main');
 const mainContainerElement = document.querySelector('.trip-events');
-// const pointsModel = new PointsModel();
 const pointsModel = new PointsModel({
   pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION)
 });
@@ -38,7 +37,7 @@ function handleNewPointFormClose() {
 }
 
 function handleNewPointButtonClick() {
-  boardPresenter.createTask();
+  boardPresenter.createPoint();
   newPointButtonComponent.element.disabled = true;
 }
 
