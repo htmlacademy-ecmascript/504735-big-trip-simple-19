@@ -2,7 +2,6 @@ import RoutPointView from '../view/route-point-view.js';
 import EditingFormView from '../view/editing-form-view.js';
 import {render, replace, remove} from '../framework/render.js';
 import {UserAction, UpdateType} from '../const.js';
-import {isDatesEqual} from '../utils/points.js';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -158,11 +157,9 @@ export default class PointPresenter {
   };
 
   #handleFormSubmit = (point) => {
-    const isMinorUpdate = !isDatesEqual(this.#point.dateFrom, point.dateFrom);
-    const updateType = isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH;
     this.#handleDataChange(
       UserAction.UPDATE_POINT,
-      updateType,
+      UpdateType.MINOR,
       point
     );
   };
@@ -178,5 +175,4 @@ export default class PointPresenter {
   #handleEditBtn = () => {
     this.#replacePointToForm();
   };
-
 }

@@ -1,5 +1,6 @@
 import AbstractView from '../framework/view/abstract-view.js';
-import { humanizePointDate, humanizePointTime, calculateDurationInPoint } from '../utils/points.js';
+import {humanizePointDate, humanizePointTime, calculateDurationInPoint} from '../utils/points.js';
+import he from 'he';
 
 const createOfferElement = (offers) => {
   if (offers.length === 0) {
@@ -32,21 +33,21 @@ function createRoutPointTemplate(point, destinations, offers) {
   return (
     `<li class="trip-events__item">
     <div class="event">
-      <time class="event__date" datetime="${eventDate}">${eventDate}</time>
+      <time class="event__date" datetime="${he.encode(eventDate)}">${he.encode(eventDate)}</time>
       <div class="event__type">
-        <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
+        <img class="event__type-icon" width="42" height="42" src="img/icons/${he.encode(type)}.png" alt="Event ${he.encode(type)} icon">
       </div>
-      <h3 class="event__title">${type} ${destinationMarkup}</h3>
+      <h3 class="event__title">${he.encode(type)} ${destinationMarkup}</h3>
       <div class="event__schedule">
         <p class="event__time">
-          <time class="event__start-time" datetime="${timeFrom}">${timeFrom}</time>
+          <time class="event__start-time" datetime="${he.encode(timeFrom)}">${he.encode(timeFrom)}</time>
           &mdash;
-          <time class="event__end-time" datetime="${timeTo}">${timeTo}</time>
+          <time class="event__end-time" datetime="${he.encode(timeTo)}">${he.encode(timeTo)}</time>
         </p>
-        <p class="event__duration">${duration}</p>
+        <p class="event__duration">${he.encode(duration)}</p>
       </div>
       <p class="event__price">
-        &euro;&nbsp;<span class="event__price-value">${price}</span>
+        &euro;&nbsp;<span class="event__price-value">${he.encode(String(price))}</span>
       </p>
       <h4 class="visually-hidden">Offers:</h4>
       <ul class="event__selected-offers">
