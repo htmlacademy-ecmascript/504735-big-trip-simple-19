@@ -4,7 +4,7 @@ import NoPointsView from '../view/no-points-view.js';
 import {render, RenderPosition, remove} from '../framework/render.js';
 import PointPresenter from './point-presenter.js';
 import {SortType, UpdateType, UserAction, FilterType} from '../const.js';
-import {sortByDuration, sortByPrice, sortByDate } from '../utils/sort.js';
+import {sortByDuration, sortByPrice, sortByDate} from '../utils/sort.js';
 import {filter} from '../utils/filter.js';
 import NewPointPresenter from './new-point-presenter.js';
 import LoadingView from '../view/loading-view.js';
@@ -228,5 +228,4 @@ export default class BoardPresenter {
     });
     render(this.#noPointsComponent, this.#boardContainer);
   };
-
 }

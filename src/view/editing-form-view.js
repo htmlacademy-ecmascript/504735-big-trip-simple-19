@@ -1,7 +1,7 @@
 import he from 'he';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
-import { humanizeDate, getCheckedDestination } from '../utils/points.js';
-import { TYPE_POINTS } from '../const.js';
+import {humanizeDate, getCheckedDestination} from '../utils/points.js';
+import {TYPE_POINTS} from '../const.js';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
@@ -28,14 +28,14 @@ const createOffersTemplate = (offers, pointOffers, pointId) => {
       return (
         `<div class="event__offer-selector">
           <input class="event__offer-checkbox  visually-hidden"
-               id="event-offer-${pointId}-${offerId}"
+               id="event-offer-${he.encode(String(pointId))}-${he.encode(String(offerId))}"
                type="checkbox"
-               data-offer-id="${offerId}"
-               name="event-offer-${pointId}" ${checkedOffer}>
-          <label class="event__offer-label" for="event-offer-${pointId}-${offerId}">
-            <span class="event__offer-title">${title}</span>
+               data-offer-id="${he.encode(String(offerId))}"
+               name="event-offer-${he.encode(String(pointId))}" ${checkedOffer}>
+          <label class="event__offer-label" for="event-offer-${he.encode(String(pointId))}-${he.encode(String(offerId))}">
+            <span class="event__offer-title">${he.encode(title)}</span>
             &plus;&euro;&nbsp;
-            <span class="event__offer-price">${price}</span>
+            <span class="event__offer-price">${he.encode(String(price))}</span>
           </label>
         </div>`);}).join('')}
        </div>
@@ -48,7 +48,7 @@ const createDestinationOptionsTemplate = (options) => {
     return '';
   }
 
-  return options.map((option) => `<option value=${option.name}></option>`).join('');
+  return options.map((option) => `<option value=${he.encode(option.name)}></option>`).join('');
 };
 
 const createDestinationTemplate = (destinations, description, pictures, name) => {
@@ -59,11 +59,11 @@ const createDestinationTemplate = (destinations, description, pictures, name) =>
   return (
     `<section class="event__section  event__section--destination">
       <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-      <p class="event__destination-description">${description}</p>
+      <p class="event__destination-description">${he.encode(description)}</p>
 
       <div class="event__photos-container">
         <div class="event__photos-tape">
-          ${pictures?.map(({ src }) => `<img class="event__photo" src="${src}" alt="Photo of ${name}">`).join('')}
+          ${pictures?.map(({ src }) => `<img class="event__photo" src="${he.encode(src)}" alt="Photo of ${he.encode(name)}">`).join('')}
         </div>
       </div>
     </section>
@@ -71,6 +71,27 @@ const createDestinationTemplate = (destinations, description, pictures, name) =>
 };
 
 const getOffersByType = (offers, point) => offers.find((offer) => offer.type === point.type);
+
+const createTypeListTemplate = (point, types) => types.map((type) => {
+  const pointType = `${type[0].toUpperCase()}${type.slice(1)}`;
+  const isChecked = Boolean(point.type === type);
+
+  return (`
+    <div class="event__type-item">
+      <input 
+        id="event-type-${type}-1" 
+        class="event__type-input  
+        visually-hidden" 
+        type="radio" 
+        name="event-type" 
+        value="${type}" 
+        ${isChecked ? 'checked' : ''}
+      >
+      <label 
+        class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${he.encode(pointType)}</label>
+    </div>
+  `);
+}).join('');
 
 
 const createEditingFormTemplate = (point, destinations, offers, isPointEdit) => {
@@ -100,52 +121,42 @@ const createEditingFormTemplate = (point, destinations, offers, isPointEdit) => 
     );
   };
 
-  const createTypeListMarkup = TYPE_POINTS.map((offerType) => `<div class="event__type-item">
-    <input id="event-type-${offerType}-1"
-       class="event__type-input  visually-hidden"
-       type="radio"
-       name="event-type"
-       value="${offerType}">
-    <label class="event__type-label  event__type-label--${offerType}" for="event-type-${offerType}-1">${offerType}</label>
-  </div>`).join('');
-
-
   return (
     `<li class="trip-events__item">
     <form class="event event--edit ${editPointElementClass}" action="#" method="get">
     <header class="event__header">
       <div class="event__type-wrapper">
-        <label class="event__type  event__type-btn" for="event-type-toggle-${id}">
+        <label class="event__type  event__type-btn" for="event-type-toggle-${he.encode(String(id))}">
           <span class="visually-hidden">Choose event type</span>
-          <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
+          <img class="event__type-icon" width="17" height="17" src="img/icons/${he.encode(type)}.png" alt="Event ${he.encode(type)} icon">
         </label>
-        <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${id}" type="checkbox">
+        <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${he.encode(String(id))}" type="checkbox">
 
         <div class="event__type-list">
           <fieldset class="event__type-group">
             <legend class="visually-hidden">Event type</legend>
-              ${createTypeListMarkup}
+              ${createTypeListTemplate(point, TYPE_POINTS)}
           </fieldset>
         </div>
       </div>
 
       <div class="event__field-group  event__field-group--destination">
-        <label class="event__label  event__type-output" for="event-destination-${id}">
-        ${type} 
+        <label class="event__label  event__type-output" for="event-destination-${he.encode(String(id))}">
+        ${he.encode(type)} 
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-${id}" type="text" name="event-destination" value="${he.encode(destination?.name || '')}"
-         list="destination-list-${id}">
-        <datalist id="destination-list-${id}">
+        <input class="event__input  event__input--destination" id="event-destination-${he.encode(String(id))}" type="text" name="event-destination" value="${he.encode(destination?.name || '')}"
+         list="destination-list-${he.encode(String(id))}">
+        <datalist id="destination-list-${he.encode(String(id))}">
           ${createDestinationOptionsTemplate(destinations)}
         </datalist>
       </div>
 
       <div class="event__field-group  event__field-group--time">
         <label class="visually-hidden" for="event-start-time-1">From</label>
-        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${editDateStart}">
+        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${he.encode(editDateStart)}">
         &mdash;
         <label class="visually-hidden" for="event-end-time-1">To</label>
-        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${editDateEnd}">
+        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${he.encode(editDateEnd)}">
       </div>
 
       <div class="event__field-group  event__field-group--price">
@@ -153,7 +164,7 @@ const createEditingFormTemplate = (point, destinations, offers, isPointEdit) => 
           <span class="visually-hidden">Price</span>
           &euro;
         </label>
-        <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" required value="${price}">
+        <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" required value="${he.encode(String(price))}">
       </div>
 
       <button class="event__save-btn  btn  btn--blue" 
@@ -335,7 +346,6 @@ export default class EditingFormView extends AbstractStatefulView{
         enableTime: true,
         dateFormat: 'd/m/y H:i',
         minDate: this._state.dateFrom,
-        maxDate: this._state.dateTo,
         datepickerFrom: this._state.dateFrom,
         onChange: this.#dateFromChageHandler,
         time24hr: true

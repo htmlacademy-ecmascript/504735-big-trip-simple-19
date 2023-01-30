@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
-import { getRandomNumber } from './common';
+import {getRandomNumber} from './common';
 
 dayjs.extend(duration);
 
@@ -41,5 +41,5 @@ const isEndDateExpired = (dateTo) => dayjs(dateTo).isAfter(dayjs());
 const isFutureEvent = (dateFrom, dateTo) => isStartDateExpired(dateFrom) && isEndDateExpired(dateTo);
 const isPresentEvent = (dateFrom, dateTo) => !isStartDateExpired(dateFrom) && isEndDateExpired(dateTo);
 const isPastEvent = (dateFrom, dateTo) => !isStartDateExpired(dateFrom) && !isEndDateExpired(dateTo);
-const isDatesEqual = (dateA, dateB) => (dateA === null && dateB === null) || dayjs(dateA).isSame(dateB, 'D');
-export {isLongerDate, getRandomDate, humanizePointDate, humanizeDate, humanizePointTime, calculateDurationInPoint, isFutureEvent, isPresentEvent, isPastEvent, getCheckedDestination, isDatesEqual};
+
+export {isLongerDate, getRandomDate, humanizePointDate, humanizeDate, humanizePointTime, calculateDurationInPoint, isFutureEvent, isPresentEvent, isPastEvent, getCheckedDestination};
