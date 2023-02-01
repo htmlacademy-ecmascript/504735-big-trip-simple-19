@@ -1,4 +1,4 @@
-import RoutPointView from '../view/route-point-view.js';
+import RoutPointView from '../view/rout-point-view.js';
 import EditingFormView from '../view/editing-form-view.js';
 import {render, replace, remove} from '../framework/render.js';
 import {UserAction, UpdateType} from '../const.js';

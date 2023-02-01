@@ -48,7 +48,7 @@ const createDestinationOptionsTemplate = (options) => {
     return '';
   }
 
-  return options.map((option) => `<option value=${he.encode(option.name)}></option>`).join('');
+  return options.map((option) => `<option value="${he.encode(option.name)}"></option>`).join('');
 };
 
 const createDestinationTemplate = (destinations, description, pictures, name) => {
@@ -108,7 +108,7 @@ const createEditingFormTemplate = (point, destinations, offers, isPointEdit) => 
   const destination = getCheckedDestination(point, destinations);
 
   const destinationsTemplate = createDestinationTemplate(destinations, destination?.description, destination?.pictures, destination?.name);
-  const isSubmitDisabled = price === '' || price === 0 || destination?.name === null || destination?.name === '';
+  const isSubmitDisabled = price === '' || price === 0 || destination?.name === null || destination?.name === '' || destination?.name === undefined;
 
   const createCloseFormButton = () => {
     if (!isPointEdit) {
